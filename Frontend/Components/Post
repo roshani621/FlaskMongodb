@@ -1,0 +1,154 @@
+import { useState } from 'react';
+import {Row, Col, Input, Button, message, Typography, DatePicker, Radio } from 'antd';
+import '../Assets/Post.css';
+import dayjs from 'dayjs';
+import {BookFilled} from '@ant-design/icons';
+const {Text, Title} = Typography;
+const { TextArea } = Input;
+
+
+const Post = () => {
+
+    const [input, setInput] = useState({});
+
+    const handleInput = (e) =>{
+        const {name, value} = e.target;
+        setInput({...input, [name]:value});
+    }
+    console.log(input);
+
+    const handleSubmit = async(e) =>{
+        try{
+            e.preventDefault();
+            const response = await fetch("http://localhost:5000/user-book",{
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(input)
+            });
+            const data = await response.json();
+            setInput(data);
+            console.log("Data: ", data);
+            message.success("Book registered successfully")
+        } catch(error){
+            console.log(error);
+            message.error("Failed to submit")
+        }
+    }
+
+    const handleDateChange = (date, dateString) => {
+        setInput({ ...input, borrow_date: dateString });
+    };
+    const dateChange = (date, dateString) => {
+        setInput({ ...input, return_date: dateString });
+    };
+    return (
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <Title level={4}><BookFilled /> Library Management</Title>
+                    <Row className="custom-row">
+                        <Col className="custom-col">
+                            <Text>User ID: </Text>
+                        </Col>
+                        <Col className="custom-col">
+                            <Input placeholder='Enter your id'
+                            name='user_id' value={input.user_id}
+                            onChange={handleInput}
+                            />
+                        </Col>
+                    </Row><br/>
+                    <Row className="custom-row">
+                        <Col className="custom-col">
+                            <Text>Book ID: </Text>
+                        </Col>
+                        <Col className="custom-col">
+                            <Input placeholder='Enter your book id'
+                            name='book_id' value={input.book_id}
+                            onChange={handleInput}
+                            />
+                        </Col>
+                    </Row><br/>
+                    <Row className="custom-row">
+                        <Col className="custom-col">
+                            <Text>Borrow Date: </Text>
+                        </Col>
+                        <Col className="custom-col">
+                            <DatePicker placeholder="Enter borrow date"
+                            showTime
+                                name="borrow_date"
+                                format={'YYYY-MM-DD HH:mm:ss'}
+                                value={input.borrow_date ? dayjs(input.borrow_date):null}
+                                onChange={handleDateChange}/>
+                        </Col>
+                    </Row><br/>
+                    <Row className="custom-row">
+                        <Col className="custom-col">
+                            <Text>Returned Date: </Text>
+                        </Col>
+                        <Col className="custom-col">
+                            <DatePicker placeholder="Enter returened date"
+                            showTime
+                                name="return_date"
+                                format={'YYYY-MM-DD HH:mm:ss'}
+                                value={input.return_date ? dayjs(input.return_date): null}
+                                onChange={dateChange}/>
+                        </Col>
+                    </Row><br/>
+                    <Row>
+                        <Col className="custom-col">
+                            <Text>Status</Text>
+                        </Col>
+                        <Col className="custom-col">
+                            <Radio.Group
+                            name='status' value={input.status} 
+                            onChange={handleInput}
+                            options={[
+                                { value: 'Borrowed', label: 'Borrowed' },
+                                { value: 'Returned', label: 'Returned' },
+                            ]}
+                            />
+                        </Col>
+                    </Row><br/>
+                    <Row>
+                        <Col className="custom-col">
+                            <Text>Rating</Text>
+                        </Col>
+                        <Col className="custom-col">
+                            <Radio.Group
+                            name='rating' value={input.rating} 
+                            onChange={handleInput}
+                            options={[
+                                { value: "Excellent", label: '🤩' },
+                                { value: "Good", label: '😊' },
+                                { value: "Average", label: '😐' },
+                                { value: "Poor", label: "😞"},
+                                { value: "Terrible", label: "😡"}
+                            ]}
+                            />
+                        </Col>
+                    </Row><br/>
+                    <Row>
+                        <Col className="custom-col">
+                            <Text>Review</Text>
+                        </Col>
+                        <Col className="custom-col">
+                            <TextArea rows={4} placeholder='enter your opnion about book'
+                            name='review' value={input.review}
+                            onChange={handleInput}
+                            />
+                        </Col>
+                    </Row><br/>
+                    <Row className="custom-row">
+                        <Col className="custom-col">
+                            <Button type='primary' 
+                            style={{marginLeft: '60px'}}
+                            htmlType="submit">Submit</Button>
+                        </Col>
+                    </Row>
+                </form>
+            </div>
+    );
+};
+
+export default Post;
