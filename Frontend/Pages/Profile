@@ -1,0 +1,51 @@
+import { Card } from 'antd';
+import React, { useEffect, useState } from 'react';
+import {Typography} from 'antd';
+import Title from 'antd/es/typography/Title';
+import '../Assets/Custome.css';
+
+const {Text} = Typography;
+
+const Profile = () => {
+
+    const [user, setUser] = useState([]);
+
+    useEffect(()=>{
+        const fetchUser = async()=>{
+            try{
+                const response = await fetch("http://localhost:5000/profile",{
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+                console.log(data);
+                setUser(data);
+            } catch(error){
+                console.log(error);
+            }
+        }
+        fetchUser();
+    },[])
+
+    return (
+        <div className='profile'> 
+            <div>
+                <Card title='Profile' hoverable style={{
+                        width: '500px', 
+                        backgroundImage: 'linear-gradient(135deg, #a23cdf, #106ad2)',
+                        borderRadius: '50px',
+                        textAlign:'center',
+                        
+                    }} >
+                    <Title level={5}>User Name - <Text>{user.name}</Text></Title>
+                    <Title level={5}>Email - <Text>{user.email}</Text></Title>
+                    <Title level={5}>Contact - <Text>{user.phone}</Text></Title>
+                    <Title level={5}>Age - <Text>{user.age}</Text></Title>
+                </Card>
+            </div>
+        </div>
+    );
+};
+
+export default Profile;
