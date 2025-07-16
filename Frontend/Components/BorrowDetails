@@ -1,0 +1,103 @@
+import React, { useEffect, useState } from 'react';
+import { Typography, Row, Col, Card } from 'antd';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faBook, faBookOpen, faBookOpenReader, faCalendar, faCircleUser, faFaceSmile, faHourglassEnd, faHourglassStart, faLayerGroup, faUser} from '@fortawesome/free-solid-svg-icons';
+import '../Assets/BorrowBook.css';
+
+const {Title, Text} = Typography;
+const BorrowDetails = () => {
+
+    const [data, setData] = useState([]);
+
+    useEffect(()=>{
+        const getData = async() =>{
+            try{
+                const response = await fetch("http://localhost:5000/book-borrow",{
+                    method:'GET'
+                });
+                const book = await response.json();
+                setData(book);
+                console.log(book);
+            } catch(error){
+                console.log(error);
+            }
+        }
+        getData();
+    },[])
+    return (
+        <div>
+           <Title level={4} style={{margin: '15px'}}>Borrowed Books Details</Title> 
+
+           <Row gutter={[16, 16]}>
+                {data.map((b)=>(
+                    <Col>
+                        <Card key={b.issue_id} 
+                        hoverable
+                        style={{
+                            fontSize: '17pt', 
+                            borderRadius: '10px',
+                            margin: '15px',
+                            padding: '15px',
+                            backgroundColor: '#EDF4EC'
+                        }}
+                        className='card'
+                        >      
+                            <Title level={5} >
+                                <FontAwesomeIcon icon={faBookOpen} color='brown' className="card-icon-1"/>
+                                    Book Name:
+                                    <Text className="card-text">{b.book_name}</Text>
+                            </Title>
+                            <Title level={5}>
+                                <FontAwesomeIcon icon={faUser} color='#2ECC71' className="card-icon-1"/>
+                                User Name: 
+                                    <Text className="card-text">{b.user_name}</Text>
+                            </Title>
+                            <Title level={5}>
+                                <FontAwesomeIcon icon={faCircleUser} color='#2ECC71' className="card-icon-1"/>
+                                Author Name: 
+                                    <Text className="card-text">{b.author_name}</Text>
+                            </Title>
+                            <Title level={5}>
+                                <FontAwesomeIcon icon={faLayerGroup} color='#2ECC71' className="card-icon-1"/>
+                                Category: 
+                                    <Text className="card-text">{b.category}</Text>
+                            </Title>
+                            <Title level={5}>
+                                <FontAwesomeIcon icon={faUser} color='#2ECC71' className="card-icon-1"/>
+                                Available Copies: 
+                                    <Text className="card-text">{b.available}</Text>
+                            </Title>
+                            <Title level={5}>
+                                <FontAwesomeIcon icon={faHourglassStart} color='#FF5722' className="card-icon-1"/>
+                                Borrow Date: 
+                                    <Text className="card-text">{b.borrow_date}</Text>
+                            </Title>
+                            <Title level={5}>
+                                <FontAwesomeIcon icon={faHourglassEnd} color='#FF5722' className="card-icon-1"/>
+                                Returned Date:  
+                                    <Text className="card-text">{b.returned_date}</Text>
+                            </Title>
+                            <Title level={5}>
+                                {b.status === "Returned"?
+                                    <FontAwesomeIcon icon={faBook} color='#4A90E2' className="card-icon-1"/>:
+                                    <FontAwesomeIcon icon={faBookOpenReader} color='#4A90E2' className="card-icon-1"/>
+                                }
+                                  Status: 
+                                <Text className="card-text" style={{ color: b.status === "Returned" ? 'green' : 'red'}}>
+                                    {b.status}
+                                </Text>
+                            </Title>
+                            <Title level={5} className="card-title">
+                                <FontAwesomeIcon icon={faFaceSmile} className="card-icon-1" color='#FFBF00'/>
+                                Rating: 
+                                <Text className="card-text">{b.rating}</Text>
+                            </Title>
+                        </Card>
+                    </Col>
+                ))}
+           </Row>
+        </div>
+    );
+};
+
+export default BorrowDetails;
