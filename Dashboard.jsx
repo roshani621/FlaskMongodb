@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Card } from 'antd';
+import { Card, Divider, Image } from 'antd';
 import {Pie, Legend, ResponsiveContainer, Tooltip, PieChart, Cell } from 'recharts';
 import Title from 'antd/es/typography/Title';
 import SideBar from './SideBar';
+import '../Assets/Custome.css';
+import img from '../Assets/janko-ferlic-sfL_QOnmy00-unsplash.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook, faBookOpen, faBookOpenReader, faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
@@ -43,15 +45,19 @@ const Dashboard = () => {
         { name: "Borrowed Book", value: totalBooks - totalAvailable}
         ];
     return (
-        <>
+        <div className='home-page'>
         <SideBar/>
+        <Divider/>
             <div style={{display: 'flex', gap:'40px',
-                backgroundColor: '#471396', paddingLeft: '50px'
-            }}>
+                 paddingLeft: '50px',
+                 
+            }} className='main-page'>
                 
                     <Card title="Available vs Total Book Copies" 
                         hoverable
-                        style={{ width:"75%", marginTop: '70px', backgroundColor: '#f7d6c0' , 
+                        style={{ width:"75%", marginTop: '70px', 
+                            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                            WebkitBackdropFilter: 'blur(16px)',   
                             
                         }}>
                         <ResponsiveContainer width="100%" height={350}>
@@ -80,10 +86,13 @@ const Dashboard = () => {
                     marginTop: '18px', flexWrap: 'wrap'}}>
                     <Card hoverable 
                     style={{width: '290px', height: '180px', 
-                    backgroundColor: '#9619b2',borderRadius: '20px',
+                    borderRadius: '20px',backdropFilter:'blur(10px)', 
+                    backgroundColor: 'rgba(135, 206, 235, 0.3)	',
+                    WebkitBackdropFilter: 'blur(16px)',    
                     marginTop: "50px",}}>
                         <Title level={4}>Total User </Title>
-                        <Title level={3} style={{display: 'flex', justifyContent: 'space-between'
+                        <Title level={3} style={{display: 'flex', justifyContent: 'space-between',
+                        
                             }}>{user} 
                             <FontAwesomeIcon icon={faCircleUser} fontSize={'30pt'} />
                         </Title>
@@ -91,7 +100,8 @@ const Dashboard = () => {
                     </Card>
                     <Card hoverable 
                     style={{width: '290px', height: '180px', 
-                    backgroundColor: '#4169E1',
+                    backgroundColor: 'rgba(230, 230, 250, 0.4)	',
+                    WebkitBackdropFilter: 'blur(16px)',
                     borderRadius: '20px',
                     marginTop: "50px",}}>
                         <Title level={4}>Total Books</Title>
@@ -101,7 +111,9 @@ const Dashboard = () => {
                     </Card>
                     <Card hoverable 
                     style={{width: '290px', height: '180px', marginTop: "50px", 
-                        backgroundColor: '#04d010',borderRadius: '20px'
+                        backgroundColor: 'rgba(144, 238, 144, 0.4)		',
+                        WebkitBackdropFilter: 'blur(16px)',
+                        borderRadius: '20px'
                     }}>
                         <Title level={4}>Available Books</Title>
                         <Title level={3} style={{display: 'flex', justifyContent: 'space-between'}}>{totalAvailable}
@@ -110,7 +122,9 @@ const Dashboard = () => {
                     </Card>
                     <Card hoverable 
                     style={{width: '290px', height: '180px', marginTop: "50px",
-                        backgroundColor: '#FF2929',borderRadius: '20px'
+                        borderRadius: '20px',
+                        backgroundColor: 'rgba(255, 99, 71, 0.4)',
+                        WebkitBackdropFilter: 'blur(16px)',
                     }}>
                         <Title level={4}>Borrowed Books</Title>
                         <Title level={3} style={{display: 'flex', justifyContent: 'space-between'}}>{bbooks}
@@ -119,7 +133,7 @@ const Dashboard = () => {
                     </Card>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
