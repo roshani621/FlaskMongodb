@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {Row, Col, Input, Button, message, Typography, DatePicker, Form} from 'antd';
 import '../Assets/Post.css';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +10,7 @@ const {Text, Title} = Typography;
 const Users = () => {
 
     const [input, setInput] = useState({});
+    const navigate = useNavigate();
 
     const handleInput = (e) =>{
         const {name, value} = e.target;
@@ -95,6 +97,12 @@ const Users = () => {
                             <Button type='primary' 
                             style={{marginLeft: '60px'}}
                             htmlType="submit">Register</Button>
+                        </Col>
+                        <Col className="custom-col">
+                            <Button type='primary' 
+                            style={{marginLeft: '40px'}}
+                            onClick={()=>{navigate('/login')}}
+                            htmlType="submit">Back</Button>
                         </Col>
                     </Row>
                 </form>
