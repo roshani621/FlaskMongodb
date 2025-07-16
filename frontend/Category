@@ -1,0 +1,69 @@
+import React, { useState } from 'react';
+import Card from 'antd/es/card/Card';
+import { Typography } from 'antd';
+import Search from 'antd/es/input/Search';
+import '../Assets/Custome.css';
+
+const {Title, Text} = Typography;
+const Category = () => {
+
+    const [input, setInput] = useState("")
+    const [category, setCategory] = useState([]);
+
+    const Search_Category = async() =>{
+        try{
+            const response = await fetch("http://localhost:5000/category", {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({text: input})
+            })
+            const data = await response.json()
+            setCategory(data);
+            console.log(input);
+            console.log(data);
+        } catch(error){
+            console.log(error);
+        }
+    }
+    return (
+        <div className='category-page'>
+            <div>
+                <Search placeholder='enter book category' value={input}
+                    onChange={(e)=>{setInput(e.target.value)}}
+                    onSearch={Search_Category}
+                    style={{
+                        width: '300px',
+                        margin: '50px',
+                        marginLeft: '120px'
+                    }}
+                />
+            
+                <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '37px',
+                    marginLeft: '35px'
+                }}>
+                    {category.map((c)=>(
+                    <Card
+                    hoverable
+                    className='category-card'
+                     >
+                        <div key={c._id}>
+                            <Title level={5}>Book Name: <Text className='category-inner'>{c.title}</Text></Title>
+                            <Title level={5}>Author: <Text className='category-inner'>{c.author}</Text></Title>
+                            <Title level={5}>Category: <Text className='category-inner'>{c.category}</Text></Title>
+                            <Title level={5}>Publish Date: <Text className='category-inner'>{c.added_date}</Text></Title>
+                        </div>
+                    </Card>
+                ))}
+                </div>
+            </div>
+            
+        </div>
+    );
+};
+
+export default Category;
